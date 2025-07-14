@@ -9,7 +9,7 @@ from sklearn.neighbors import NearestNeighbors
 from flask_cors import CORS
 
 # Import tflite runtime for a smaller memory footprint
-import tensorflow as tf
+import tflite_runtime.interpreter as tflite
 
 # Lazy-load Keras modules only when needed
 image_processing = None
@@ -35,7 +35,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 # 1. Load TensorFlow Lite Model (Much smaller and faster than full Keras)
 print("Loading TFLite feature extractor model...")
 try:
-    interpreter = tf.lite.Interpreter(model_path="feature_extractor.tflite")
+    interpreter = tflite.Interpreter(model_path="feature_extractor.tflite")
     interpreter.allocate_tensors()
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
